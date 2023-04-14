@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import psutil
+from selenium.webdriver.firefox.options import Options
 
 
 def click_connect_button(wd: webdriver) -> None:
@@ -21,6 +22,7 @@ def click_connect_button(wd: webdriver) -> None:
 
     except TimeoutException:
         raise Exception("Connect button failed to load")
+    time.sleep(5)
 
 
 class TorWebDriver(BaseWebDriver):
@@ -28,21 +30,21 @@ class TorWebDriver(BaseWebDriver):
 
     @classmethod
     def get(
-        cls, executable_path: str, options=None, locale="en-US, en", *args, **kwargs
+        cls, executable_path: str, locale: str = "en-US, en", *args, **kwargs
     ) -> webdriver:
         if not os.path.exists(executable_path):
             raise ValueError("The binary path to Tor firefox does not exist.")
         cls.kill_all_tor_browsers()
 
         firefox_binary = FirefoxBinary(executable_path)
-        firefox_profile = webdriver.FirefoxProfile()
-        firefox_profile.set_preference("intl.accept_languages", locale)
-        firefox_profile.update_preferences()
+        profile = cls.get_profile(locale=locale)
+        options = cls.get_options()
         wd = webdriver.Firefox(
-            firefox_profile=firefox_profile,
+            firefox_profile=profile,
             firefox_binary=firefox_binary,
             options=options,
         )
+        click_connect_button(wd)
         return wd
 
     @staticmethod
@@ -54,3 +56,19 @@ class TorWebDriver(BaseWebDriver):
                     proc.kill()
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
+
+    @staticmethod
+    def get_options():
+        options = Options()
+        options.add_argument("--width=1920")
+        options.add_argument("--height=1080")
+        return options
+
+    @staticmethod
+    def get_profile(**kwargs):
+        firefox_profile = webdriver.FirefoxProfile()
+        firefox_profile.set_preference(
+            "intl.accept_languages", kwargs.get("locale", "")
+        )
+        firefox_profile.update_preferences()
+        return firefox_profile

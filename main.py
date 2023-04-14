@@ -1,15 +1,36 @@
-import time
 from webdrivers.tordriver import TorWebDriver, click_connect_button
+import argparse
+from crawlers.random_crawler import RandomCrawler
 
 
-binary_path = "/Applications/Tor Browser.app/Contents/MacOS/firefox"
-wd = TorWebDriver.get(binary_path)
+def main():
+    parser = argparse.ArgumentParser(description="Generate Web Traffic")
+    parser.add_argument(
+        "--url",
+        type=str,
+        help="The URL of the website to generate traffic for",
+        required=True,
+    )
+    parser.add_argument(
+        "--time",
+        type=int,
+        help="The time that each bot will spend on the website (in seconds)",
+        default=120,
+    )
+    parser.add_argument(
+        "--bots",
+        type=int,
+        help="The number of bots/website visitors to generate traffic for (default: 1)",
+        default=1,
+    )
+    binary_path = "/Applications/Tor Browser.app/Contents/MacOS/firefox"
 
-time.sleep(3)
-click_connect_button(wd)
-time.sleep(3)
-# check my IP address
-url = "https://carsinfo.pl"
-wd.get(url)
-time.sleep(5)
+    args = parser.parse_args()
+    for _ in range(args.bots):
+        wd = TorWebDriver.get(binary_path)
+        crawler = RandomCrawler(wd, args.url, args.time)
+        crawler.start()
 
+
+if __name__ == "__main__":
+    main()
