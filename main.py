@@ -12,3 +12,4 @@ time.sleep(3)
 url = "https://carsinfo.pl"
 wd.get(url)
 time.sleep(5)
+
