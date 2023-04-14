@@ -32,10 +32,9 @@ class TorWebDriver(BaseWebDriver):
     ) -> webdriver:
         if not os.path.exists(executable_path):
             raise ValueError("The binary path to Tor firefox does not exist.")
-
         cls.kill_all_tor_browsers()
-        firefox_binary = FirefoxBinary(executable_path)
 
+        firefox_binary = FirefoxBinary(executable_path)
         firefox_profile = webdriver.FirefoxProfile()
         firefox_profile.set_preference("intl.accept_languages", locale)
         firefox_profile.update_preferences()
