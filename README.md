@@ -44,26 +44,6 @@ TOR_BINARY_PATH = "/Users/XXX/Applications/TorBrowser.app/Contents/MacOS/firefox
 You need to provide your custom path.
 
 ### Usage
-To use the Web Traffic Generator, you can run the main.py script with the following command-line arguments:
-
-usage: main.py [-h] --url URL [--browser {TOR,CHROME}] [--time TIME] [--instances INSTANCES]
-
-Generate Web Traffic
-
-options:
-
-  -h, --help            show this help message and exit
-
-  --url URL             The URL of the website to generate traffic for
-
-  --browser {TOR,CHROME}
-                        specify which browser to use (default: TOR)
-
-  --time TIME           The time that each bot will spend on the website (in seconds), default: 120
-
-  --instances INSTANCES
-                        The number of instances/website visitors that will generate traffic (default: 1)
-### Usage
 
 ```bash
 main.py [-h] --url URL [--browser {TOR,CHROME}] [--time TIME] [--instances INSTANCES]
@@ -77,3 +57,6 @@ main.py [-h] --url URL [--browser {TOR,CHROME}] [--time TIME] [--instances INSTA
 | --time TIME            | The time that each bot will spend on the website (in seconds), default: 120      |
 | --instances INSTANCES  | The number of instances/website visitors that will generate traffic (default: 1) |
 
+### License
+
+[MIT](https://opensource.org/licenses/MIT)
