@@ -10,7 +10,7 @@ def main():
     args = parser.parse_args()
     manager = CrawlerManager(
         RandomCrawler,
-        args.bots,
+        args.instances,
         args.time,
         args.url,
         args.browser,

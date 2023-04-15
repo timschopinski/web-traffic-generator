@@ -32,9 +32,9 @@ def get_parser() -> argparse.ArgumentParser:
         default=120,
     )
     parser.add_argument(
-        "--bots",
+        "--instances",
         type=int,
-        help="The number of bots/website visitors to generate traffic for (default: 1)",
+        help="The number of instances/website visitors that will generate traffic (default: 1)",
         default=1,
     )
     return parser
