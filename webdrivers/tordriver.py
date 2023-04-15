@@ -8,6 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import psutil
 from selenium.webdriver.firefox.options import Options
+from settings import TOR_BINARY_PATH
 
 
 def click_connect_button(wd: webdriver) -> None:
@@ -29,12 +30,10 @@ class TorWebDriver(BaseWebDriver):
 
     @classmethod
     def get(
-        cls, executable_path: str, *args, **kwargs
+        cls, *args, **kwargs
     ) -> webdriver:
-        super().get(executable_path, *args, **kwargs)
         cls.kill_all_tor_browsers()
-
-        firefox_binary = FirefoxBinary(executable_path)
+        firefox_binary = FirefoxBinary(TOR_BINARY_PATH)
         profile = cls.get_profile()
         options = Options()
         options = cls._get_options(options)

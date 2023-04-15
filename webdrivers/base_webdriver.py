@@ -8,8 +8,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 class BaseWebDriver(ABC):
     @classmethod
     @abstractmethod
-    def get(cls, executable_path: str, *args, **kwargs) -> webdriver:
-        cls._validate_executable_path(executable_path)
+    def get(cls, *args, **kwargs) -> webdriver:
         ...
 
     @staticmethod
