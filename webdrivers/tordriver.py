@@ -1,4 +1,3 @@
-import os
 import time
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from webdrivers.base_webdriver import BaseWebDriver
@@ -30,15 +29,15 @@ class TorWebDriver(BaseWebDriver):
 
     @classmethod
     def get(
-        cls, executable_path: str, locale: str = "en-US, en", *args, **kwargs
+        cls, executable_path: str, *args, **kwargs
     ) -> webdriver:
-        if not os.path.exists(executable_path):
-            raise ValueError("The binary path to Tor firefox does not exist.")
+        super().get(executable_path, *args, **kwargs)
         cls.kill_all_tor_browsers()
 
         firefox_binary = FirefoxBinary(executable_path)
-        profile = cls.get_profile(locale=locale)
-        options = cls.get_options()
+        profile = cls.get_profile()
+        options = Options()
+        options = cls._get_options(options)
         wd = webdriver.Firefox(
             firefox_profile=profile,
             firefox_binary=firefox_binary,
@@ -58,17 +57,10 @@ class TorWebDriver(BaseWebDriver):
                 pass
 
     @staticmethod
-    def get_options():
-        options = Options()
-        options.add_argument("--width=1920")
-        options.add_argument("--height=1080")
-        return options
-
-    @staticmethod
-    def get_profile(**kwargs):
+    def get_profile():
         firefox_profile = webdriver.FirefoxProfile()
         firefox_profile.set_preference(
-            "intl.accept_languages", kwargs.get("locale", "")
+            "intl.accept_languages", "en-US, en"
         )
         firefox_profile.update_preferences()
         return firefox_profile

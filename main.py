@@ -1,35 +1,22 @@
-from webdrivers.tordriver import TorWebDriver, click_connect_button
-import argparse
-from crawlers.random_crawler import RandomCrawler
+from web.crawlers import RandomCrawler
+from managers.crawler_manager import CrawlerManager
+from parser import get_parser
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate Web Traffic")
-    parser.add_argument(
-        "--url",
-        type=str,
-        help="The URL of the website to generate traffic for",
-        required=True,
-    )
-    parser.add_argument(
-        "--time",
-        type=int,
-        help="The time that each bot will spend on the website (in seconds)",
-        default=120,
-    )
-    parser.add_argument(
-        "--bots",
-        type=int,
-        help="The number of bots/website visitors to generate traffic for (default: 1)",
-        default=1,
-    )
-    binary_path = "/Applications/Tor Browser.app/Contents/MacOS/firefox"
-
+    parser = get_parser()
+    tor_executable_path = "/Applications/Tor Browser.app/Contents/MacOS/firefox"
+    chrome_executable_path = "/Users/timschopinski/PycharmProjects/web-traffic-generator/drivers/chromedriver"
     args = parser.parse_args()
-    for _ in range(args.bots):
-        wd = TorWebDriver.get(binary_path)
-        crawler = RandomCrawler(wd, args.url, args.time)
-        crawler.start()
+    manager = CrawlerManager(
+        RandomCrawler,
+        args.bots,
+        args.time,
+        args.url,
+        args.browser,
+        chrome_executable_path,
+    )
+    manager.crawl()
 
 
 if __name__ == "__main__":
